@@ -249,7 +249,7 @@ class _ChatPageState extends State<ChatPage> {
                       return ui.TextMessage(
                         message: textMessage,
                         showName: showName,
-                        buttons: textMessage.metadata?['buttons'],
+                        buttons: textMessage.metadata?['buttons'] ?? [],
                         onButtonPressed: _handleMessageButtonPressed,
                       );
                     },
