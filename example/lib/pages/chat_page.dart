@@ -9,8 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:usedesk/usedesk.dart';
 import 'package:usedesk_example/pages/specify_project_page.dart';
 import 'package:usedesk_example/utils/random.dart';
-import 'package:usedesk_example/widgets/text_message.dart' as ui;
 import 'package:usedesk_example/widgets/image_message.dart' as ui;
+import 'package:usedesk_example/widgets/text_message.dart' as ui;
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -130,8 +130,9 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _handleMessageButtonPressed(String text, {String? url}) async {
-    if (url?.isNotEmpty ?? false) {
-      !await launch(url!);
+    final uri = Uri.tryParse(url ?? '');
+    if (uri != null) {
+      await launchUrl(uri);
     } else {
       widget.usedeskChat.sendText(text);
     }
@@ -150,11 +151,13 @@ class _ChatPageState extends State<ChatPage> {
 
       if (message is MessageTextBase) {
         final typedMessage = message as MessageTextBase;
-        return TextMessageWithButtons(
+        return types.TextMessage(
           id: messageId,
           author: author,
           text: typedMessage.text,
-          buttons: typedMessage.buttons,
+          metadata: {
+            'buttons': typedMessage.buttons,
+          },
         );
       } else if (message is MessageFileBase) {
         final typedMessage = message as MessageFileBase;
@@ -243,12 +246,10 @@ class _ChatPageState extends State<ChatPage> {
                       required messageWidth,
                       required showName,
                     }) {
-                      final chatMessageWithButtons =
-                          textMessage as TextMessageWithButtons;
                       return ui.TextMessage(
                         message: textMessage,
                         showName: showName,
-                        buttons: chatMessageWithButtons.buttons,
+                        buttons: textMessage.metadata?['buttons'],
                         onButtonPressed: _handleMessageButtonPressed,
                       );
                     },
@@ -281,20 +282,4 @@ class _ChatPageState extends State<ChatPage> {
           )),
     );
   }
-}
-
-class TextMessageWithButtons extends types.TextMessage {
-  /// Creates a text message.
-  const TextMessageWithButtons({
-    required types.User author,
-    required String id,
-    required String text,
-    required this.buttons,
-  }) : super(
-          id: id,
-          author: author,
-          text: text,
-        );
-
-  final List<MessageButton> buttons;
 }

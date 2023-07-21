@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_link_previewer/flutter_link_previewer.dart'
-    show LinkPreview, regexLink;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-
-// ignore: implementation_imports
-import 'package:flutter_chat_ui/src/widgets/inherited_chat_theme.dart';
-// ignore: implementation_imports
-import 'package:flutter_chat_ui/src/widgets/inherited_user.dart';
 // ignore: implementation_imports
 import 'package:flutter_chat_ui/src/util.dart';
+// ignore: implementation_imports
+import 'package:flutter_chat_ui/src/widgets/state/inherited_chat_theme.dart';
+// ignore: implementation_imports
+import 'package:flutter_chat_ui/src/widgets/state/inherited_user.dart';
+import 'package:flutter_link_previewer/flutter_link_previewer.dart'
+    show LinkPreview, regexLink;
 import 'package:usedesk/usedesk.dart';
 
 /// A class that represents text message widget with optional link preview
